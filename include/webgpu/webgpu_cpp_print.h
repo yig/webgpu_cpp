@@ -38,41 +38,6 @@
 namespace wgpu {
 
   template <typename CharT, typename Traits>
-  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, WGSLFeatureName value) {
-      switch (value) {
-      case WGSLFeatureName::ReadonlyAndReadwriteStorageTextures:
-        o << "WGSLFeatureName::ReadonlyAndReadwriteStorageTextures";
-        break;
-      case WGSLFeatureName::Packed4x8IntegerDotProduct:
-        o << "WGSLFeatureName::Packed4x8IntegerDotProduct";
-        break;
-      case WGSLFeatureName::UnrestrictedPointerParameters:
-        o << "WGSLFeatureName::UnrestrictedPointerParameters";
-        break;
-      case WGSLFeatureName::PointerCompositeAccess:
-        o << "WGSLFeatureName::PointerCompositeAccess";
-        break;
-      case WGSLFeatureName::ChromiumTestingUnimplemented:
-        o << "WGSLFeatureName::ChromiumTestingUnimplemented";
-        break;
-      case WGSLFeatureName::ChromiumTestingUnsafeExperimental:
-        o << "WGSLFeatureName::ChromiumTestingUnsafeExperimental";
-        break;
-      case WGSLFeatureName::ChromiumTestingExperimental:
-        o << "WGSLFeatureName::ChromiumTestingExperimental";
-        break;
-      case WGSLFeatureName::ChromiumTestingShippedWithKillswitch:
-        o << "WGSLFeatureName::ChromiumTestingShippedWithKillswitch";
-        break;
-      case WGSLFeatureName::ChromiumTestingShipped:
-        o << "WGSLFeatureName::ChromiumTestingShipped";
-        break;
-          default:
-            o << "WGSLFeatureName::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<WGSLFeatureName>::type>(value);
-      }
-      return o;
-  }
-  template <typename CharT, typename Traits>
   std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, AdapterType value) {
       switch (value) {
       case AdapterType::DiscreteGPU:
@@ -95,9 +60,6 @@ namespace wgpu {
   template <typename CharT, typename Traits>
   std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, AddressMode value) {
       switch (value) {
-      case AddressMode::Undefined:
-        o << "AddressMode::Undefined";
-        break;
       case AddressMode::ClampToEdge:
         o << "AddressMode::ClampToEdge";
         break;
@@ -109,23 +71,6 @@ namespace wgpu {
         break;
           default:
             o << "AddressMode::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<AddressMode>::type>(value);
-      }
-      return o;
-  }
-  template <typename CharT, typename Traits>
-  std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, AlphaMode value) {
-      switch (value) {
-      case AlphaMode::Opaque:
-        o << "AlphaMode::Opaque";
-        break;
-      case AlphaMode::Premultiplied:
-        o << "AlphaMode::Premultiplied";
-        break;
-      case AlphaMode::Unpremultiplied:
-        o << "AlphaMode::Unpremultiplied";
-        break;
-          default:
-            o << "AlphaMode::" << std::showbase << std::hex << std::setfill('0') << std::setw(4) << static_cast<typename std::underlying_type<AlphaMode>::type>(value);
       }
       return o;
   }
@@ -167,9 +112,6 @@ namespace wgpu {
   template <typename CharT, typename Traits>
   std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>& o, BlendFactor value) {
       switch (value) {
-      case BlendFactor::Undefined:
-        o << "BlendFactor::Undefined";
-        break;
       case BlendFactor::Zero:
         o << "BlendFactor::Zero";
         break;

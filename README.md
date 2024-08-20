@@ -22,6 +22,7 @@ Fast:
 mkdir -p generator
 curl 'https://dawn.googlesource.com/dawn/+archive/refs/heads/chromium/6668/generator.tar.gz' | tar -C generator -xzf -
 curl 'https://dawn.googlesource.com/dawn/+/refs/heads/chromium/6668/src/dawn/dawn.json?format=TEXT' | base64 -d -o dawn.json
+patch dawn.json dawn.json.patch
 
 mkdir -p include/webgpu
 curl 'https://dawn.googlesource.com/dawn/+/refs/heads/chromium/6668/include/webgpu/webgpu_enum_class_bitmasks.h?format=TEXT' | base64 -d -o include/webgpu/webgpu_enum_class_bitmasks.h

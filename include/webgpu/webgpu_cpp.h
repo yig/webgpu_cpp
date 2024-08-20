@@ -70,20 +70,6 @@ static constexpr uint32_t kMipLevelCountUndefined = WGPU_MIP_LEVEL_COUNT_UNDEFIN
 static constexpr uint32_t kQuerySetIndexUndefined = WGPU_QUERY_SET_INDEX_UNDEFINED;
 static constexpr size_t kWholeMapSize = WGPU_WHOLE_MAP_SIZE;
 static constexpr uint64_t kWholeSize = WGPU_WHOLE_SIZE;
-enum class WGSLFeatureName : uint32_t {
-    ReadonlyAndReadwriteStorageTextures = WGPUWGSLFeatureName_ReadonlyAndReadwriteStorageTextures,
-    Packed4x8IntegerDotProduct = WGPUWGSLFeatureName_Packed4x8IntegerDotProduct,
-    UnrestrictedPointerParameters = WGPUWGSLFeatureName_UnrestrictedPointerParameters,
-    PointerCompositeAccess = WGPUWGSLFeatureName_PointerCompositeAccess,
-    ChromiumTestingUnimplemented = WGPUWGSLFeatureName_ChromiumTestingUnimplemented,
-    ChromiumTestingUnsafeExperimental = WGPUWGSLFeatureName_ChromiumTestingUnsafeExperimental,
-    ChromiumTestingExperimental = WGPUWGSLFeatureName_ChromiumTestingExperimental,
-    ChromiumTestingShippedWithKillswitch = WGPUWGSLFeatureName_ChromiumTestingShippedWithKillswitch,
-    ChromiumTestingShipped = WGPUWGSLFeatureName_ChromiumTestingShipped,
-};
-static_assert(sizeof(WGSLFeatureName) == sizeof(WGPUWGSLFeatureName), "sizeof mismatch for WGSLFeatureName");
-static_assert(alignof(WGSLFeatureName) == alignof(WGPUWGSLFeatureName), "alignof mismatch for WGSLFeatureName");
-
 enum class AdapterType : uint32_t {
     DiscreteGPU = WGPUAdapterType_DiscreteGPU,
     IntegratedGPU = WGPUAdapterType_IntegratedGPU,
@@ -94,21 +80,12 @@ static_assert(sizeof(AdapterType) == sizeof(WGPUAdapterType), "sizeof mismatch f
 static_assert(alignof(AdapterType) == alignof(WGPUAdapterType), "alignof mismatch for AdapterType");
 
 enum class AddressMode : uint32_t {
-    Undefined = WGPUAddressMode_Undefined,
     ClampToEdge = WGPUAddressMode_ClampToEdge,
     Repeat = WGPUAddressMode_Repeat,
     MirrorRepeat = WGPUAddressMode_MirrorRepeat,
 };
 static_assert(sizeof(AddressMode) == sizeof(WGPUAddressMode), "sizeof mismatch for AddressMode");
 static_assert(alignof(AddressMode) == alignof(WGPUAddressMode), "alignof mismatch for AddressMode");
-
-enum class AlphaMode : uint32_t {
-    Opaque = WGPUAlphaMode_Opaque,
-    Premultiplied = WGPUAlphaMode_Premultiplied,
-    Unpremultiplied = WGPUAlphaMode_Unpremultiplied,
-};
-static_assert(sizeof(AlphaMode) == sizeof(WGPUAlphaMode), "sizeof mismatch for AlphaMode");
-static_assert(alignof(AlphaMode) == alignof(WGPUAlphaMode), "alignof mismatch for AlphaMode");
 
 enum class BackendType : uint32_t {
     Undefined = WGPUBackendType_Undefined,
@@ -125,7 +102,6 @@ static_assert(sizeof(BackendType) == sizeof(WGPUBackendType), "sizeof mismatch f
 static_assert(alignof(BackendType) == alignof(WGPUBackendType), "alignof mismatch for BackendType");
 
 enum class BlendFactor : uint32_t {
-    Undefined = WGPUBlendFactor_Undefined,
     Zero = WGPUBlendFactor_Zero,
     One = WGPUBlendFactor_One,
     Src = WGPUBlendFactor_Src,
@@ -1115,7 +1091,6 @@ struct CompilationInfoCallbackInfo;
 struct CompilationMessage;
 struct ComputePassTimestampWrites;
 struct ConstantEntry;
-struct CopyTextureForBrowserOptions;
 struct CreateComputePipelineAsyncCallbackInfo;
 struct CreateRenderPipelineAsyncCallbackInfo;
 struct DawnWGSLBlocklist;
@@ -1555,8 +1530,6 @@ class Instance : public ObjectBase<Instance, WGPUInstance> {
     using ObjectBase::operator=;
 
     inline Surface CreateSurface(SurfaceDescriptor const * descriptor) const;
-    inline size_t EnumerateWGSLLanguageFeatures(WGSLFeatureName * features) const;
-    inline Bool HasWGSLLanguageFeature(WGSLFeatureName feature) const;
     inline void ProcessEvents() const;
     inline void RequestAdapter(RequestAdapterOptions const * options, RequestAdapterCallback callback, void * userdata) const;
     template <typename F, typename T,
@@ -1616,8 +1589,6 @@ class Queue : public ObjectBase<Queue, WGPUQueue> {
     using ObjectBase::ObjectBase;
     using ObjectBase::operator=;
 
-    inline void CopyExternalTextureForBrowser(ImageCopyExternalTexture const * source, ImageCopyTexture const * destination, Extent3D const * copySize, CopyTextureForBrowserOptions const * options) const;
-    inline void CopyTextureForBrowser(ImageCopyTexture const * source, ImageCopyTexture const * destination, Extent3D const * copySize, CopyTextureForBrowserOptions const * options) const;
     inline void OnSubmittedWorkDone(QueueWorkDoneCallback callback, void * userdata) const;
     template <typename F, typename T,
               typename Cb = void (QueueWorkDoneStatus status, T userdata),
@@ -2177,22 +2148,6 @@ struct ConstantEntry {
     ChainedStruct const * nextInChain = nullptr;
     char const * key;
     double value;
-
-
-};
-
-struct CopyTextureForBrowserOptions {
-    inline operator const WGPUCopyTextureForBrowserOptions&() const noexcept;
-
-    ChainedStruct const * nextInChain = nullptr;
-    Bool flipY = false;
-    Bool needsColorSpaceConversion = false;
-    AlphaMode srcAlphaMode = AlphaMode::Unpremultiplied;
-    float const * srcTransferFunctionParameters = nullptr;
-    float const * conversionMatrix = nullptr;
-    float const * dstTransferFunctionParameters = nullptr;
-    AlphaMode dstAlphaMode = AlphaMode::Unpremultiplied;
-    Bool internalUsage = false;
 
 
 };
@@ -3916,7 +3871,7 @@ struct RenderPassColorAttachment {
 
     ChainedStruct const * nextInChain = nullptr;
     TextureView view = nullptr;
-    uint32_t depthSlice = WGPU_DEPTH_SLICE_UNDEFINED;
+    uint32_t depthSlice;
     TextureView resolveTarget = nullptr;
     LoadOp loadOp;
     StoreOp storeOp;
@@ -4669,33 +4624,6 @@ static_assert(offsetof(ConstantEntry, key) == offsetof(WGPUConstantEntry, key),
         "offsetof mismatch for ConstantEntry::key");
 static_assert(offsetof(ConstantEntry, value) == offsetof(WGPUConstantEntry, value),
         "offsetof mismatch for ConstantEntry::value");
-
-// CopyTextureForBrowserOptions implementation
-
-CopyTextureForBrowserOptions::operator const WGPUCopyTextureForBrowserOptions&() const noexcept {
-    return *reinterpret_cast<const WGPUCopyTextureForBrowserOptions*>(this);
-}
-
-static_assert(sizeof(CopyTextureForBrowserOptions) == sizeof(WGPUCopyTextureForBrowserOptions), "sizeof mismatch for CopyTextureForBrowserOptions");
-static_assert(alignof(CopyTextureForBrowserOptions) == alignof(WGPUCopyTextureForBrowserOptions), "alignof mismatch for CopyTextureForBrowserOptions");
-static_assert(offsetof(CopyTextureForBrowserOptions, nextInChain) == offsetof(WGPUCopyTextureForBrowserOptions, nextInChain),
-        "offsetof mismatch for CopyTextureForBrowserOptions::nextInChain");
-static_assert(offsetof(CopyTextureForBrowserOptions, flipY) == offsetof(WGPUCopyTextureForBrowserOptions, flipY),
-        "offsetof mismatch for CopyTextureForBrowserOptions::flipY");
-static_assert(offsetof(CopyTextureForBrowserOptions, needsColorSpaceConversion) == offsetof(WGPUCopyTextureForBrowserOptions, needsColorSpaceConversion),
-        "offsetof mismatch for CopyTextureForBrowserOptions::needsColorSpaceConversion");
-static_assert(offsetof(CopyTextureForBrowserOptions, srcAlphaMode) == offsetof(WGPUCopyTextureForBrowserOptions, srcAlphaMode),
-        "offsetof mismatch for CopyTextureForBrowserOptions::srcAlphaMode");
-static_assert(offsetof(CopyTextureForBrowserOptions, srcTransferFunctionParameters) == offsetof(WGPUCopyTextureForBrowserOptions, srcTransferFunctionParameters),
-        "offsetof mismatch for CopyTextureForBrowserOptions::srcTransferFunctionParameters");
-static_assert(offsetof(CopyTextureForBrowserOptions, conversionMatrix) == offsetof(WGPUCopyTextureForBrowserOptions, conversionMatrix),
-        "offsetof mismatch for CopyTextureForBrowserOptions::conversionMatrix");
-static_assert(offsetof(CopyTextureForBrowserOptions, dstTransferFunctionParameters) == offsetof(WGPUCopyTextureForBrowserOptions, dstTransferFunctionParameters),
-        "offsetof mismatch for CopyTextureForBrowserOptions::dstTransferFunctionParameters");
-static_assert(offsetof(CopyTextureForBrowserOptions, dstAlphaMode) == offsetof(WGPUCopyTextureForBrowserOptions, dstAlphaMode),
-        "offsetof mismatch for CopyTextureForBrowserOptions::dstAlphaMode");
-static_assert(offsetof(CopyTextureForBrowserOptions, internalUsage) == offsetof(WGPUCopyTextureForBrowserOptions, internalUsage),
-        "offsetof mismatch for CopyTextureForBrowserOptions::internalUsage");
 
 // CreateComputePipelineAsyncCallbackInfo implementation
 
@@ -8767,14 +8695,6 @@ Surface Instance::CreateSurface(SurfaceDescriptor const * descriptor) const {
     auto result = wgpuInstanceCreateSurface(Get(), reinterpret_cast<WGPUSurfaceDescriptor const * >(descriptor));
     return Surface::Acquire(result);
 }
-size_t Instance::EnumerateWGSLLanguageFeatures(WGSLFeatureName * features) const {
-    auto result = wgpuInstanceEnumerateWGSLLanguageFeatures(Get(), reinterpret_cast<WGPUWGSLFeatureName * >(features));
-    return result;
-}
-Bool Instance::HasWGSLLanguageFeature(WGSLFeatureName feature) const {
-    auto result = wgpuInstanceHasWGSLLanguageFeature(Get(), static_cast<WGPUWGSLFeatureName>(feature));
-    return result;
-}
 void Instance::ProcessEvents() const {
     wgpuInstanceProcessEvents(Get());
 }
@@ -8919,12 +8839,6 @@ static_assert(alignof(QuerySet) == alignof(WGPUQuerySet), "alignof mismatch for 
 
 // Queue implementation
 
-void Queue::CopyExternalTextureForBrowser(ImageCopyExternalTexture const * source, ImageCopyTexture const * destination, Extent3D const * copySize, CopyTextureForBrowserOptions const * options) const {
-    wgpuQueueCopyExternalTextureForBrowser(Get(), reinterpret_cast<WGPUImageCopyExternalTexture const * >(source), reinterpret_cast<WGPUImageCopyTexture const * >(destination), reinterpret_cast<WGPUExtent3D const * >(copySize), reinterpret_cast<WGPUCopyTextureForBrowserOptions const * >(options));
-}
-void Queue::CopyTextureForBrowser(ImageCopyTexture const * source, ImageCopyTexture const * destination, Extent3D const * copySize, CopyTextureForBrowserOptions const * options) const {
-    wgpuQueueCopyTextureForBrowser(Get(), reinterpret_cast<WGPUImageCopyTexture const * >(source), reinterpret_cast<WGPUImageCopyTexture const * >(destination), reinterpret_cast<WGPUExtent3D const * >(copySize), reinterpret_cast<WGPUCopyTextureForBrowserOptions const * >(options));
-}
 void Queue::OnSubmittedWorkDone(QueueWorkDoneCallback callback, void * userdata) const {
     wgpuQueueOnSubmittedWorkDone(Get(), callback, userdata);
 }
