@@ -41,4 +41,5 @@ The only dependency is `jinja2@e2d024354e11cc6b041b0cff032d73f0c7e43a07`.
 ```
 python3 generator/dawn_json_generator.py --targets cpp_headers --dawn-json dawn.json --template-dir generator/templates --output-dir output
 cp output/include/webgpu/webgpu_cpp_chained_struct.h output/include/dawn/webgpu_cpp.h output/include/dawn/webgpu_cpp_print.h include/webgpu
+sed -i "" 's/dawn\/webgpu_cpp\.h/webgpu\/webgpu_cpp\.h/' include/webgpu/webgpu_cpp_print.h
 ```

@@ -28,7 +28,7 @@
 #ifndef WEBGPU_CPP_PRINT_H_
 #define WEBGPU_CPP_PRINT_H_
 
-#include "dawn/webgpu_cpp.h"
+#include "webgpu/webgpu_cpp.h"
 
 #include <iomanip>
 #include <ios>
