@@ -63,6 +63,12 @@ cp include/webgpu/webgpu_enum_class_bitmasks.h ../include/webgpu
 cd ..
 ```
 
+If you manually edit `dawn.json`, you can update the patch via:
+
+```
+curl 'https://dawn.googlesource.com/dawn/+/refs/heads/chromium/6668/src/dawn/dawn.json?format=TEXT' | base64 -d | git diff --no-index -p --output dawn.json.patch -- - dawn.json
+```
+
 ### Install Python requirements
 
 ```

@@ -1,6 +1,6 @@
-diff --git a/dawn.json b/dawn.json
-index ad1b051..ae53614 100644
---- a/dawn.json
+diff --git a/- b/dawn.json
+index 0000000..9416eef 100644
+--- a/-
 +++ b/dawn.json
 @@ -338,7 +338,6 @@
      "address mode": {
@@ -18,7 +18,26 @@ index ad1b051..ae53614 100644
              {"value": 1, "name": "zero"},
              {"value": 2, "name": "one"},
              {"value": 3, "name": "src"},
-@@ -1301,33 +1299,6 @@
+@@ -603,17 +601,12 @@
+             {"value": 10, "name": "one minus dst alpha"},
+             {"value": 11, "name": "src alpha saturated"},
+             {"value": 12, "name": "constant"},
+-            {"value": 13, "name": "one minus constant"},
+-            {"value": 14, "name": "src1"},
+-            {"value": 15, "name": "one minus src1"},
+-            {"value": 16, "name": "src1 alpha"},
+-            {"value": 17, "name": "one minus src1 alpha"}
++            {"value": 13, "name": "one minus constant"}
+         ]
+     },
+     "blend operation": {
+         "category": "enum",
+         "values": [
+-            {"value": 0, "name": "undefined", "jsrepr": "undefined"},
+             {"value": 1, "name": "add"},
+             {"value": 2, "name": "subtract"},
+             {"value": 3, "name": "reverse subtract"},
+@@ -1301,33 +1294,6 @@
              {"name": "requires full subgroups", "type": "bool", "default": "false"}
          ]
      },
@@ -52,7 +71,7 @@ index ad1b051..ae53614 100644
      "create compute pipeline async callback": {
          "category": "function pointer",
          "args": [
-@@ -2800,20 +2771,6 @@
+@@ -2800,20 +2766,6 @@
                      {"name": "options", "type": "request adapter options", "annotation": "const*", "optional": true, "no_default": true},
                      {"name": "callback info", "type": "request adapter callback info 2"}
                  ]
@@ -73,7 +92,7 @@ index ad1b051..ae53614 100644
              }
          ]
      },
-@@ -3150,28 +3107,6 @@
+@@ -3150,28 +3102,6 @@
                      {"name": "write size", "type": "extent 3D", "annotation": "const*"}
                  ]
              },
@@ -102,7 +121,7 @@ index ad1b051..ae53614 100644
              {
                  "name": "set label",
                  "returns": "void",
-@@ -3405,7 +3340,7 @@
+@@ -3405,7 +3335,7 @@
          "extensible": "in",
          "members": [
              {"name": "view", "type": "texture view", "optional": true},
@@ -111,7 +130,7 @@ index ad1b051..ae53614 100644
              {"name": "resolve target", "type": "texture view", "optional": true},
              {"name": "load op", "type": "load op"},
              {"name": "store op", "type": "store op"},
-@@ -4699,21 +4634,6 @@
+@@ -4699,21 +4629,6 @@
              {"value": 31, "name": "unorm 10_10_10_2", "jsrepr": "'unorm10-10-10-2'"}
          ]
      },
